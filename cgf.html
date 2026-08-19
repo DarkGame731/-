@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            color: #d1d5db;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: #21213e;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: #a1a1aa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        /* ปุ่มสร้างประกาศพิเศษ */
+        .btn-create-job {
+            background-color: #4f46e5;
+            color: #ffffff !important;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .btn-create-job:hover {
+            background-color: #4338ca !important;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            opacity: 0.8;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .center-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-center {
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #4a4e69;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-center:hover {
+            background-color: #2c2c4a;
+        }
+
+        .right-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-auth {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #21213e;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-auth:hover {
+            background-color: #2c2c4a;
+        }
+
+        .main-title {
+            font-size: 28px;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        /* --- Card Grid --- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: #21213e;
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card-detail {
+            color: #a1a1aa;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .highlight-detail {
+            color: #d1d5db;
+        }
+
+        /* --- Modal Popup (หน้าต่างสร้างงาน) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        /* แสดง Modal เมื่อมี class 'active' */
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background-color: #21213e;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #a1a1aa;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #ffffff;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #d1d5db;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #1a1a2e;
+            border: 1px solid #4a4e69;
+            border-radius: 6px;
+            color: #ffffff;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #6366f1;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #4338ca;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div>
+            <div class="logo">MyMarket</div>
+            <a href="#" class="menu-item active">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                หน้าแรก
+            </a>
+            
+            <!-- ปุ่มกดเพื่อเปิด Modal สร้างงาน -->
+            <a href="#" class="menu-item btn-create-job" id="openModalBtn">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                + สร้างโพสต์จ้างงาน
+            </a>
+
+            <a href="#" class="menu-item" style="margin-top: 15px;">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                การตั้งค่า
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-nav">
+            <a href="#" class="btn-auth">หน้าแรก</a>
+            <div class="center-buttons">
+                <a href="#" class="btn-center">ดูสินค้า</a>
+                <a href="#" class="btn-center">ติดต่อ</a>
+            </div>
+            <div class="right-buttons">
+                <button class="btn-auth">เข้าสู่ระบบ</button>
+                <button class="btn-auth">สมัครสมาชิก</button>
+            </div>
+        </header>
+
+        <h1 class="main-title">โพสต์รับจ้างฟาร์มล่าสุด</h1>
+
+        <!-- Container แสดงรายการการ์ด -->
+        <div class="card-grid" id="jobGrid">
+            <div class="product-card">
+                <h2 class="card-title">จ้างฟาร์ม Dota 2: Battle Pass 30-50</h2>
+                <p class="card-detail">🎮 เกม: <span class="highlight-detail">Dota 2</span></p>
+                <p class="card-detail">⏱️ ระยะเวลา: <span class="highlight-detail">ภายใน 3 วัน</span></p>
+                <p class="card-detail">💰 ราคา: <span class="highlight-detail">500 บาท</span></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Popup สำหรับสร้างงานใหม่ -->
+    <div class="modal-overlay" id="jobModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>สร้างโพสต์จ้างงานใหม่</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label>หัวข้อการจ้างงาน</label>
+                    <input type="text" id="jobTitle" placeholder="เช่น จ้างฟาร์ม LVL 1-50" required>
+                </div>
+                <div class="form-group">
+                    <label>ชื่อเกม</label>
+                    <input type="text" id="gameName" placeholder="เช่น Dota 2, Valorant" required>
+                </div>
+                <div class="form-group">
+                    <label>ระยะเวลาทำงาน</label>
+                    <input type="text" id="duration" placeholder="เช่น ภายใน 3 วัน" required>
+                </div>
+                <div class="form-group">
+                    <label>ราคา (บาท)</label>
+                    <input type="number" id="price" placeholder="เช่น 500" required>
+                </div>
+                <button type="submit" class="btn-submit">ลงประกาศ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript ควบคุมการเปิด-ปิด Modal และการเพิ่มโพสต์ -->
+    <script>
+        const modal = document.getElementById('jobModal');
+        const openBtn = document.getElementById('openModalBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+        const jobForm = document.getElementById('jobForm');
+        const jobGrid = document.getElementById('jobGrid');
+
+        // เปิด Modal
+        openBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('active');
+        });
+
+        // ปิด Modal เมื่อกดปุ่ม X
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // ปิด Modal เมื่อกดพื้นที่สีดำภายนอก
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // จัดการสร้างการ์ดงานใหม่เมื่อส่ง Form
+        jobForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // ดึงค่าจาก Input
+            const title = document.getElementById('jobTitle').value;
+            const game = document.getElementById('gameName').value;
+            const duration = document.getElementById('duration').value;
+            const price = document.getElementById('price').value;
+
+            // สร้าง Element การ์ดใหม่
+            const newCard = document.createElement('div');
+            newCard.className = 'product-card';
+            newCard.innerHTML = `
+                <h2 class="card-title">${title}</h2>
+                <p class="card-detail">🎮 เกม: <span class="highlight-detail">${game}</span></p>
+                <p class="card-detail">⏱️ ระยะเวลา: <span class="highlight-detail">${duration}</span></p>
+                <p class="card-detail">💰 ราคา: <span class="highlight-detail">${Number(price).toLocaleString()} บาท</span></p>
+            `;
+
+            // แทรกการ์ดใหม่ไว้ด้านหน้าสุด
+            jobGrid.prepend(newCard);
+
+            // รีเซ็ตค่าใน Form และปิด Modal
+            jobForm.reset();
+            modal.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
