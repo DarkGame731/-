@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGF - Community Game Farmer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+
+        background-image: url('img/bg_ro.jpg');
+        
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+}
+
+
+        header {
+            background-color: #000000; 
+            height: 200px;
+            display: flex;
+            align-items: center;
+            overflow: hidden; 
+            position: relative;
+            border-bottom: 4px solid #999999;
+        }
+
+        /* คอนเทนเนอร์สำหรับข้อความวิ่ง */
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s linear infinite; 
+        }
+
+
+        /* กลุ่มข้อความที่จะวิ่งวนซ้ำ */
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 40px;
+        }
+
+        .marquee-title {
+            color: #ffffff;
+            font-size: 48px;
+            font-style: italic;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .marquee-subtitle {
+            color: #8c8c8c;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .marquee-divider {
+            color: #5865F2; 
+            font-size: 32px;
+            padding: 0 10px;
+        }
+
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 100px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 120px;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .main-image-placeholder {
+            width: 1100px;
+            height: 550px;
+            flex-shrink: 0;
+            background-color: #b9e5fb;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-radius: 4px;
+        }
+
+  
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 75px;
+            width: 420px;
+            flex-shrink: 0;
+        }
+
+
+        .custom-button {
+            display: flex;
+            align-items: center;
+            border: none;
+            height: 80px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s, filter 0.2s;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .simple-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, filter 0.2s;
+}
+
+        .simple-button:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+}
+        .custom-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn-discord {
+            background-color: #5865F2;
+        }
+
+        .btn-facebook {
+            background-color: #1877F2;
+        }
+
+        .btn-tiktok {
+            background-color: #000000;
+        }
+
+        .btn-simple {
+            background-color: #000000;
+        }
+
+        .button-icon-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .button-text {
+            flex-grow: 1;
+            text-align: center;
+            padding-right: 80px;
+        }
+        
+        .main-image-placeholder {
+             position: relative;
+            overflow: hidden;
+        }
+
+        .sub-banner-text {
+            width: 100%;             
+            text-align: center;      
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            color: #ffffff;          
+            font-size: 32px;         
+            font-weight: bold;
+            margin-top: 100px;
+        }
+        .sub-bottom-text {
+            width: 100%;             
+            text-align: center;      
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            color: #ffffff;          
+            font-size: 32px;         
+            font-weight: bold;
+            margin-top: 70px;      
+        }
+
+        /* ตั้งค่ารูปภาพทั้งหมดในกรอบซ้าย */
+        .main-image-placeholder img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0; /* ซ่อนรูปไว้ก่อน */
+            transition: opacity 1s ease-in-out; /* ทำเอฟเฟกต์ค่อยๆ เลือนเปลี่ยนรูป */
+}
+
+/* รูปภาพที่จะให้แสดงผล */
+        .main-image-placeholder img.active {
+            opacity: 1;
+}
+/* ===================================================
+   Responsive CSS (สำหรับมือถือและแท็บเล็ต)
+   =================================================== */
+
+/* 1. สำหรับแท็บเล็ตและหน้าจอขนาดกลาง (ความกว้างไม่เกิน 1024px) */
+@media (max-width: 1024px) {
+    main {
+        flex-direction: column; /* เปลี่ยนจากแนวนอนเป็นแนวตั้ง */
+        justify-content: center;
+        align-items: center;
+        gap: 40px;            /* ลดระยะห่างระหว่างรูปกับปุ่ม */
+        margin: 30px auto;     /* ลดระยะห่างจากด้านบน */
+        padding: 0 20px;
+    }
+
+    .main-image-placeholder {
+        width: 100%;          /* ยืดรูปให้เต็มความกว้างหน้าจอ */
+        max-width: 700px;     /* จำกัดขนาดสูงสุดไว้ไม่ให้ใหญ่เกินไป */
+        height: 400px;        /* ปรับความสูงให้สมดุล */
+    }
+
+    .button-container {
+        width: 100%;          /* ยืดปุ่มให้เต็มความกว้าง */
+        max-width: 500px;     /* จำกัดความกว้างสูงสุดของปุ่ม */
+    }
+}
+
+/* 2. สำหรับหน้าจอมือถือขนาดเล็ก (ความกว้างไม่เกิน 600px) */
+@media (max-width: 600px) {
+    header {
+        height: 100px;        /* ลดความสูงแบนเนอร์ข้อความวิ่งลง */
+    }
+
+    .marquee-title {
+        font-size: 32px;      /* ลดขนาดตัวอักษรแบนเนอร์ */
+    }
+
+    .marquee-subtitle {
+        font-size: 16px;
+    }
+
+    .sub-banner-text {
+        font-size: 18px;      /* ลดขนาดตัวหนังสือใต้แบนเนอร์ */
+        padding: 0 15px;
+    }
+
+    .main-image-placeholder {
+        height: 250px;        /* ลดความสูงกรอบรูปภาพเพื่อให้พอดีจอมือถือ */
+    }
+
+    .custom-button {
+        height: 65px;         /* ลดความสูงปุ่มกดลงเล็กน้อย */
+        font-size: 18px;      /* ลดขนาดตัวหนังสือในปุ่ม */
+    }
+
+    .button-icon-placeholder {
+        width: 65px;          /* ปรับความกว้างช่องไอคอนให้รับกับความสูงปุ่ม */
+        height: 65px;
+    }
+
+    .button-text {
+        padding-right: 65px;  /* ปรับระยะจัดกึ่งกลางตัวหนังสือตามขนาดไอคอนใหม่ */
+    }
+}
+
+    </style>
+</head>
+<body>
+    
+    <!-- แบนเนอร์ด้านบนแบบตัวอักษรวิ่ง -->
+    <header>
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <span class="marquee-title">CGF</span>
+                    <span class="marquee-subtitle">Community Game Farmer</span>
+                    <span class="marquee-divider">★</span>
+                </div>
+                <div class="marquee-item">
+                    <span class="marquee-title">WELCOME TO CGF</span>
+                    <span class="marquee-subtitle">Community Game Farmer</span>
+                    <span class="marquee-divider">★</span>
+                </div>
+                <div class="marquee-item">
+                    <span class="marquee-title">JOIN OUR COMMUNITY</span>
+                    <span class="marquee-subtitle">Discord • Facebook • TikTok</span>
+                    <span class="marquee-divider">★</span>
+                </div>
+            </div>
+
+            <div class="marquee-content">
+                <div class="marquee-item">
+                    <span class="marquee-title">CGF</span>
+                    <span class="marquee-subtitle">Community Game Farmer</span>
+                    <span class="marquee-divider">★</span>
+                </div>
+                <div class="marquee-item">
+                    <span class="marquee-title">WELCOME TO CGF</span>
+                    <span class="marquee-subtitle">Community Game Farmer</span>
+                    <span class="marquee-divider">★</span>
+                </div>
+                <div class="marquee-item">
+                    <span class="marquee-title">JOIN OUR COMMUNITY</span>
+                    <span class="marquee-subtitle">Discord • Facebook • TikTok</span>
+                    <span class="marquee-divider">★</span>
+                </div>
+            </div>
+        </div>
+    </header>
+        <div class="sub-banner-text">
+            ยินดีต้อนรับสู่ Community Game Farmer
+        </div>
+    <main>
+
+        <div class="main-image-placeholder" id="imageSlider">
+            <img src="img/ro01.jpg" alt="รูปที่ 1" class="active">
+            <img src="img/ro02.jpg" alt="รูปที่ 2">
+            <img src="img/ro03.jpg" alt="รูปที่ 3">
+            <img src="img/ro04.jpg" alt="รูปที่ 4">
+            <img src="img/ro05.jpg" alt="รูปที่ 5">
+        </div>
+
+        <div class="button-container">
+            <a href="https://discord.gg/MGYVrmqq7" target="_blank" class="custom-button btn-discord">
+                <div class="button-icon-placeholder">
+                    <img src="img/dis_logo.png" alt="dis_logo" style="width: 80%; height: 80%;">
+                </div>
+                <span class="button-text">Discord</span>
+            </a>
+
+            <a href="https://www.facebook.com/Luxg3as" target="_blank" class="custom-button btn-facebook">
+                <div class="button-icon-placeholder">
+                    <img src="img/fb_logo.PNG" alt="dis_logo" style="width: 80%; height: 80%;">
+                </div>
+                <span class="button-text">Facebook</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@luxg_3as.05?lang=th-TH" target="_blank" class="custom-button btn-tiktok">
+                <div class="button-icon-placeholder">
+                    <img src="img/tt_logo.PNG" alt="dis_logo" style="width: 70%; height: 70%;">
+                </div>
+                <span class="button-text">TikTok</span>
+            </a>
+            <a href="cgf.html" target="_blank" class="simple-button btn-simple">
+                <div class="button-icon-placeholder">
+                    <img src="img/cgf.jpg" alt="dis_logo" style="width: 100%; height: 100%;">
+                </div>
+                <span class="button-text">CGF Web</span>
+            </a>
+        </div>
+    </main>
+            <script>
+            const images = document.querySelectorAll('#imageSlider img');
+            let currentIndex = 0;
+            const changeInterval = 2000;
+
+            function showNextImage() {
+             // เอา class active ออกจากรูปปัจจุบัน
+            images[currentIndex].classList.remove('active');
+        
+            // คำนวณลำดับรูปถัดไป (เมื่อถึงรูปสุดท้ายจะวนกลับมารูปแรก)
+            currentIndex = (currentIndex + 1) % images.length;
+        
+            // ใส่ class active ให้รูปถัดไป
+            images[currentIndex].classList.add('active');
+        }
+
+            // สั่งให้ทำงานวนลูปตามระยะเวลาที่กำหนด
+            setInterval(showNextImage, changeInterval);
+</script>
+        <div class="sub-bottom-text">
+            Community Game Farmer &nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp; คอมมูนิตี้สำหรับตัวจริงเรื่องฟาร์มของ
+        </div>
+</body>
+</html>
